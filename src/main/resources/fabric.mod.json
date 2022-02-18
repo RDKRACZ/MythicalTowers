@@ -10,6 +10,7 @@
     "contact": {
         "repo": "https://github.com/RedGrapefruit09/MythicalTowers"
     },
+    "accessWidener": "mythicaltowers.accesswidener",
     "license": "MIT",
     "icon": "assets/mythicaltowers/icon.png",
     "environment": "*",
@@ -23,7 +24,7 @@
         "main": [
             {
                 "adapter": "kotlin",
-                "value": "com.redgrapefruit.mythicaltowers.common.MythicalTowers"
+                "value": "com.redgrapefruit.mythicaltowers.MythicalTowers"
             }
         ]
     },

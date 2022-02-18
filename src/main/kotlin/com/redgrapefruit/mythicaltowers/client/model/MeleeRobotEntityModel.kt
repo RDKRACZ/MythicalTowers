@@ -1,15 +1,15 @@
 package com.redgrapefruit.mythicaltowers.client.model
 
-import com.redgrapefruit.mythicaltowers.common.entity.melee.MeleeRobotEntity
 import net.minecraft.client.model.*
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.entity.Entity
 
 /**
- * A model for the melee robot
+ * The shared model for melee robots
  */
-class MeleeRobotEntityModel(private val root: ModelPart) : EntityModel<MeleeRobotEntity>() {
+class MeleeRobotEntityModel<T : Entity>(private val root: ModelPart) : EntityModel<T>() {
     override fun render(
         matrices: MatrixStack,
         vertices: VertexConsumer,
@@ -20,45 +20,56 @@ class MeleeRobotEntityModel(private val root: ModelPart) : EntityModel<MeleeRobo
         blue: Float,
         alpha: Float
     ) {
-        matrices.push()
-        // Render every cuboid
+        // Render the entire root
         root.forEachCuboid(matrices) { entry, _, _, cuboid ->
             cuboid.renderCuboid(entry, vertices, light, overlay, red, green, blue, alpha)
         }
-        matrices.pop()
     }
 
     override fun setAngles(
-        entity: MeleeRobotEntity?,
+        entity: T,
         limbAngle: Float,
         limbDistance: Float,
         animationProgress: Float,
         headYaw: Float,
         headPitch: Float
-    ) {
+    ) = Unit
 
-    }
-
-    companion object {
-        fun texturedModelData(): TexturedModelData {
+    companion object Builder {
+        /**
+         * Creates the model
+         */
+        fun create(): TexturedModelData {
             val data = ModelData()
 
-            data.root.apply {
-                addChild("1", ModelPartBuilder.create()
-                    .uv(0, 24)
-                    .cuboid(6.0F, -2.0F, -8.0F, 2.0F, 2.0F, 16.0F)
-                    .cuboid(-8.0F, -2.0F, -8.0F, 2.0F, 2.0F, 16.0F)
-                    .cuboid(-8.0F, -16.0F, -8.0F, 2.0F, 2.0F, 16.0F)
-                    .cuboid(6.0F, -16.0F, -8.0F, 2.0F, 2.0F, 16.0F)
-                    , ModelTransform.pivot(0.0F, 24.0F, 0.0F))
+            // Imported & converted from BlockBench
+            data.root.addChild("all", ModelPartBuilder.create()
+                .uv(0, 0)
+                .cuboid(-4.0F, -13.0F, -4.0F, 8.0F, 8.0F, 8.0F)
+                .uv(22, 16)
+                .cuboid(-5.0F, -14.0F, 4.0F, 10.0F, 10.0F, 1.0F)
+                .uv(0, 16)
+                .cuboid(-5.0F, -14.0F, -5.0F, 10.0F, 10.0F, 1.0F)
+                .uv(24, 4)
+                .cuboid(1.0F, -5.0F, 1.0F, 2.0F, 2.0F, 2.0F)
+                .uv(24, 0)
+                .cuboid(1.0F, -5.0F, -3.0F, 2.0F, 2.0F, 2.0F)
+                .uv(0, 4)
+                .cuboid(-3.0F, -5.0F, -3.0F, 2.0F, 2.0F, 2.0F)
+                .uv(0, 0)
+                .cuboid(-3.0F, -5.0F, 1.0F, 2.0F, 2.0F, 2.0F)
+                .uv(12, 27)
+                .cuboid(-2.0F, -3.0F, 2.0F, 1.0F, 1.0F, 1.0F)
+                .uv(8, 27)
+                .cuboid(-2.0F, -3.0F, -3.0F, 1.0F, 1.0F, 1.0F)
+                .uv(4, 27)
+                .cuboid(2.0F, -3.0F, -2.0F, 1.0F, 1.0F, 1.0F)
+                .uv(0, 27)
+                .cuboid(2.0F, -3.0F, 1.0F, 1.0F, 1.0F, 1.0F),
 
-                addChild("2", ModelPartBuilder.create()
-                    .uv(0, 0)
-                    .cuboid(-6.0F, -14.0F, -6.0F, 12.0F, 12.0F, 12.0F)
-                    , ModelTransform.pivot(0.0F, 24.0F, 0.0F))
-            }
+                ModelTransform.pivot(0.0F, 24.0F, 0.0F))
 
-            return TexturedModelData.of(data, 48, 48)
+            return TexturedModelData.of(data, 64, 64)
         }
     }
 }
